@@ -6,6 +6,7 @@ We try to follow Godot's [GDScript style guide](https://docs.godotengine.org/en/
 ## Overview
 The top level folder structure should look like this:
 -assets
+-data
 -docs
 -scenes
 -scripts
@@ -15,7 +16,8 @@ The `assets` folder contains all non-code assets.
 
 
 While utilising assets from a variety of places we include the `license.txt` file alongside the related assets. 
-
+## Data
+Config and data files.
 ## Docs
 Project documentation is held here.
 
@@ -26,11 +28,36 @@ xxx
 xxx
 
 # Naming
+## Private or Public
 Private or local variables and functions should be prefixed with an underscore, i.e. `_`. This is to keep the external API of the class as clean and simple as possible. 
 
-# Formatting
-A template is provided, which provides a standard organisation for .gd files.
+## Is or Has
+For any conditions that check the *thing*-ness of a class, we use `Is*` or `Has*`, e.g. `IsReady` naming conventions. 
 
+# Formatting
+## Ordering
+A template is provided, which provides a standard organisation for .gd files.
+## Indentation
+We use K&R indentation, specifically the One True Brace version, e.g.
+```
+func is_negative(int x) -> bool:
+    if (x < 0):
+        return true
+    else:
+        return false
+    
+
+```
+Or
+```
+bool is_negative(int x) {
+    if (x < 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+```
 # Type Hints
 Static typing is used for everything. This is both for comprehension and for performance increases.
 
