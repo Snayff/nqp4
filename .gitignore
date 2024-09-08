@@ -13,3 +13,12 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Obsidian
+.obsidian
+
+# Jetbrains
+.idea
+
+# local helper files
+*.bat
