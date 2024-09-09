@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnohmpv8t68cp"]
+
+[ext_resource type="PackedScene" uid="uid://bu67fpxuswlqx" path="res://components/TileMaps/TileMap.tscn" id="1_nf1mr"]
+[ext_resource type="PackedScene" uid="uid://bymmbpcbbiuk4" path="res://components/Camera/Camera.tscn" id="2_m6c7o"]
+[ext_resource type="PackedScene" uid="uid://dr3kx0g66jwww" path="res://components/DebugInterface/DebugInterface.tscn" id="4_eqgc6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_imapr"]
+size = Vector2(1204, 26)
+
+[node name="Main" type="Node2D"]
+
+[node name="TileMap" parent="." instance=ExtResource("1_nf1mr")]
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(579, 366)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(-592, 0)
+shape = SubResource("RectangleShape2D_imapr")
+one_way_collision = true
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(590, -366)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(-592, 0)
+rotation = -3.14159
+shape = SubResource("RectangleShape2D_imapr")
+one_way_collision = true
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(-591, 482)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
+position = Vector2(-592, 0)
+shape = SubResource("RectangleShape2D_imapr")
+one_way_collision = true
+metadata/_edit_lock_ = true
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="."]
+position = Vector2(588, 471)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D6"]
+position = Vector2(-592, 0)
+rotation = -3.14159
+shape = SubResource("RectangleShape2D_imapr")
+one_way_collision = true
+metadata/_edit_lock_ = true
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Camera" parent="." instance=ExtResource("2_m6c7o")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugInterface" parent="CanvasLayer" node_paths=PackedStringArray("actors") instance=ExtResource("4_eqgc6")]
+actors = NodePath("../../Actors")
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
