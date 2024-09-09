@@ -9,6 +9,8 @@ signal selection_changed(selected: bool)
 #region Exports
 ## The [Unit]'s movement speed.
 @export var speed: float = 125
+## The minimum distance to the target's position before stopping.
+@export var target_stop_distance: float = 30
 ## Whether the [Unit] is selected (controlled) or not.
 @export var is_selected:bool = false :
     get:
@@ -21,6 +23,8 @@ signal selection_changed(selected: bool)
 #region Variables
 ## Directional input passed from the Camera.
 var direction: Vector2 = Vector2.ZERO
+var _target_position: Vector2
+var _move_to_target: bool = false
 #endregion
 
 #region Functions
@@ -30,14 +34,19 @@ func _init() -> void:
 
 func _ready() -> void:
     selection_changed.connect(on_selection_changed)
-    if Global.DEBUG:
+    Global.target_position_changed.connect(move_to_target)
+    if Global.DEBUG.unit_hover_print:
         mouse_entered.connect(func(): print("Mouse entered over %s" % self))
         mouse_exited.connect(func(): print("Mouse exited over %s" % self))
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
     if is_selected:
-        global_position += direction * speed * delta
+        apply_impulse(direction * speed * delta, global_position)
+    else:
+        # TODO: Handle cases where larger groups of units can't get close enough to the target
+        if _move_to_target && global_position.distance_to(_target_position) > target_stop_distance:
+            apply_impulse(global_position.direction_to(_target_position) * speed * delta, global_position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -57,4 +66,10 @@ func on_selection_changed(selected: bool) -> void:
         Global.selected_unit = null
         
     $Sprite2D.scale = Vector2(1.2 if selected else 1.0, 1.2 if selected else 1.0)
+
+
+func move_to_target(pos: Vector2) -> void:
+    #print("New target position is %s" % pos)
+    _target_position = pos
+    _move_to_target = true
 #endregion

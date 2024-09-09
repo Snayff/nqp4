@@ -29,4 +29,11 @@ func handle_input(delta: float, target = null) -> void:
     else:
         zoom = zoom.lerp(Vector2(2, 2), 0.1)
         position += direction * SPEED * delta
+
+func _input(event: InputEvent) -> void:
+    # Right click
+    if event is InputEventMouseButton &&\
+       event.is_pressed() && event.button_index == 2:
+        Global.target_position = get_global_mouse_position()
+        Global.target_position_changed.emit(Global.target_position)
 #endregion
