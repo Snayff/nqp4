@@ -10,8 +10,8 @@ var _target: Node = null
 
 #region Functions
 func _process(delta: float) -> void:
-    if Global.selected_unit != null:
-        _target = Global.selected_unit
+    if Global.selected_actor != null:
+        _target = Global.selected_actor
     else:
         _target = null
     handle_input(delta, _target)

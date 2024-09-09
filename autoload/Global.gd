@@ -1,20 +1,20 @@
 extends Node
 
 const DEBUG: Dictionary = {
-    "unit_hover_print": false,
+    "actor_hover_print": false,
     "spawn_spiral": true
 }
 
-#region selected_unit
-## Emitted every time the selected unit changes.
-signal selected_unit_changed(unit: Unit)
-## Globally accessible selected [Unit].
-var selected_unit: Unit = null :
+#region selected_actor
+## Emitted every time the selected actor changes.
+signal selected_actor_changed(actor: Actor)
+## Globally accessible selected [Actor].
+var selected_actor: Actor = null :
     get:
-        return selected_unit
+        return selected_actor
     set(v):
-        selected_unit = v
-        selected_unit_changed.emit(selected_unit)
+        selected_actor = v
+        selected_actor_changed.emit(selected_actor)
 #endregion
 
 #region target_position
@@ -25,11 +25,11 @@ var target_position: Vector2 = Vector2.ZERO
 
 #region Functions
 func spawn_spiral() -> void:
-    const unit_scene: Resource = preload("res://components/Unit/Unit.tscn")
+    const actor_scene: Resource = preload("res://components/Actor/Actor.tscn")
     const angle_step: float = 5
     const distance: float = 5
     const center: Vector2 = Vector2.ZERO
-    var unit_parent: Node2D = get_tree().get_root().get_child(1).find_child("Units")
+    var actor_parent: Node2D = get_tree().get_root().get_child(1).find_child("Actors")
 
     for i in range(1000):
         var angle: float = i * angle_step
@@ -37,10 +37,10 @@ func spawn_spiral() -> void:
         var x: float = center.x + radius * cos(angle)
         var y: float = center.y + radius * sin(angle)
         var position: Vector2 = Vector2(x, y)
-        var unit: Unit = unit_scene.instantiate()
+        var actor: Actor = actor_scene.instantiate()
         
-        unit.position = position
-        unit_parent.add_child(unit)
+        actor.position = position
+        actor_parent.add_child(actor)
 
 
 func _ready() -> void:
@@ -51,10 +51,10 @@ func _ready() -> void:
 
 func _input(_event: InputEvent) -> void:
     if Input.is_action_just_released(&"ui_accept"):
-        release_unit()
+        release_actor()
 
 
-func release_unit() -> void:
-    selected_unit.is_selected = false
-    selected_unit = null
+func release_actor() -> void:
+    selected_actor.is_selected = false
+    selected_actor = null
 #endregion
