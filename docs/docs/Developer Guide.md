@@ -17,6 +17,8 @@ It will clutter up your list of branches with dead branches. It ensures you only
 ## Commits
 ## Past Tense
 Commit messages should be in the past tense, e.g. `added support for mods`. The subject should be short and concise, with extra details noted in the body. 
+## lower case
+Both the subject and body of a commit should be in lower case. 
 # Fix as You Go
 We adopt a fix as you go attitude, meaning we generally avoid Pull Requests containing only style fixes. It is preferable to fix non-confirming code/content as we work on it. 
 # Releases
