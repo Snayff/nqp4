@@ -8,7 +8,9 @@
 
 [node name="TileMap" parent="." instance=ExtResource("1_nf1mr")]
 
-[node name="Unit" parent="." instance=ExtResource("1_cho6h")]
+[node name="Units" type="Node2D" parent="."]
+
+[node name="Unit" parent="Units" instance=ExtResource("1_cho6h")]
 position = Vector2(37, 25)
 
 [node name="Camera" parent="." instance=ExtResource("2_m6c7o")]

@@ -30,11 +30,14 @@ func _init() -> void:
 
 func _ready() -> void:
     selection_changed.connect(on_selection_changed)
+    if Global.DEBUG:
+        mouse_entered.connect(func(): print("Mouse entered over %s" % self))
+        mouse_exited.connect(func(): print("Mouse exited over %s" % self))
 
 
 func _process(delta: float) -> void:
     if is_selected:
-        position += direction * speed * delta
+        global_position += direction * speed * delta
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -1,5 +1,7 @@
 extends Node
 
+const DEBUG: bool = true
+
 ## Emitted every time the selected unit changes.
 signal selected_unit_changed(unit: Unit)
 
