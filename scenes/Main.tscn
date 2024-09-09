@@ -11,5 +11,4 @@
 [node name="Unit" parent="." instance=ExtResource("1_cho6h")]
 position = Vector2(37, 25)
 
-[node name="Camera2D" parent="." instance=ExtResource("2_m6c7o")]
-SPEED = 1.0
+[node name="Camera" parent="." instance=ExtResource("2_m6c7o")]

@@ -1,26 +1,32 @@
 extends Camera2D
 
-@export var SPEED: float = 2.5
+#region Exports
+@export var SPEED: float = 150.0
+#endregion
 
+#region Variables
 var _target: Node = null
+#endregion
 
-func _process(_delta: float) -> void:
+#region Functions
+func _process(delta: float) -> void:
     if Global.selected_unit != null:
         _target = Global.selected_unit
     else:
         _target = null
-    handle_input(_target)
+    handle_input(delta, _target)
 
 
-func handle_input(target = null) -> void:
+func handle_input(delta: float, target = null) -> void:
     var direction: Vector2 = Vector2.ZERO
     direction.x = Input.get_axis(&"move_left", &"move_right")
     direction.y = Input.get_axis(&"move_up", &"move_down")
     
     if target:
-        target.position += direction * SPEED
+        target.direction = direction
         zoom = zoom.lerp(Vector2(2.5, 2.5), 0.1)
         position = target.position
     else:
         zoom = zoom.lerp(Vector2(2, 2), 0.1)
-        position += direction * SPEED
+        position += direction * SPEED * delta
+#endregion

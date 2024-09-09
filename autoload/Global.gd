@@ -1,7 +1,9 @@
 extends Node
 
+## Emitted every time the selected unit changes.
 signal selected_unit_changed(unit: Unit)
 
+## Globally accessible selected [Unit].
 var selected_unit: Unit = null :
     get:
         return selected_unit
