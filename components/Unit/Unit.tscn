@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://0wnrkg3nbfs5"]
+
+[ext_resource type="Script" path="res://components/Unit/Unit.gd" id="1_w8ewk"]
+[ext_resource type="Texture2D" uid="uid://dldmflst28sas" path="res://assets/actors/horse_rider/RampartSpriteFemale-Right(Frame1).png" id="2_gj57a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lrj42"]
+
+[node name="Unit" type="RigidBody2D"]
+input_pickable = true
+gravity_scale = 0.0
+script = ExtResource("1_w8ewk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lrj42")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_gj57a")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
