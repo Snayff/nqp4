@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://0wnrkg3nbfs5"]
+[gd_scene load_steps=6 format=3 uid="uid://c41gacsds2reo"]
 
-[ext_resource type="Script" path="res://components/Actor/Actor.gd" id="1_tf8no"]
+[ext_resource type="Script" path="res://components/Actor/Actor.gd" id="1_320gp"]
+[ext_resource type="Texture2D" uid="uid://dldmflst28sas" path="res://assets/actors/horse_rider/RampartSpriteFemale-Right(Frame1).png" id="4_tvv5v"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv21b"]
 friction = 0.5
@@ -21,7 +22,7 @@ continuous_cd = 1
 contact_monitor = true
 max_contacts_reported = 10
 linear_damp = 4.0
-script = ExtResource("1_tf8no")
+script = ExtResource("1_320gp")
 speed = 5000.0
 
 [node name="ViewRange" type="Area2D" parent="."]
@@ -34,6 +35,10 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lrj42")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_tvv5v")
 metadata/_edit_lock_ = true
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]

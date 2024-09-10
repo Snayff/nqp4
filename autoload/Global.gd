@@ -2,7 +2,9 @@ extends Node
 
 const DEBUG: Dictionary = {
     "actor_hover_print": false,
-    "spawn_spiral": true
+    "spawn_spiral": true,
+    "print_selected_actor_data": true,
+    "draw_actor_debug": true
 }
 
 #region selected_actor
@@ -25,13 +27,13 @@ var target_position: Vector2 = Vector2.ZERO
 
 #region Functions
 func spawn_spiral() -> void:
-    const actor_scene: Resource = preload("res://components/Actor/Actor.tscn")
+    const actor_scene: Resource = preload("res://components/Actor/ExampleActor/ExampleActor.tscn")
     const angle_step: float = 5
     const distance: float = 5
     const center: Vector2 = Vector2.ZERO
-    var actor_parent: Node2D = get_tree().get_root().get_child(1).find_child("Actors")
+    var actor_parent: Node2D = get_tree().get_root().get_node("Main/Actors")
 
-    for i in range(1000):
+    for i in range(2):
         var angle: float = i * angle_step
         var radius: float = i * distance / (2 * PI)
         var x: float = center.x + radius * cos(angle)
@@ -40,6 +42,14 @@ func spawn_spiral() -> void:
         var actor: Actor = actor_scene.instantiate()
         
         actor.position = position
+        var team = BehaviorTeam.new()
+        if i % 2:
+            team.team = Constants.TEAMS.ENEMY
+            team.modulate = Color.RED
+            actor.behaviors.push_back(BehaviorChase.new())
+        else:
+            team.team = Constants.TEAMS.FRIENDLY
+        actor.behaviors.push_back(team)
         actor_parent.add_child(actor)
 
 
