@@ -4,7 +4,7 @@ extends Behavior
 
 # NOTE: May be worth to make this work with a Stat resource which holds
 #       individual stats.
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
     super(_target)
     target.data.stats = {}
     props_changed.emit()

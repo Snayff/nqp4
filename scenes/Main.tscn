@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnohmpv8t68cp"]
+[gd_scene load_steps=6 format=3 uid="uid://bnohmpv8t68cp"]
 
 [ext_resource type="PackedScene" uid="uid://bu67fpxuswlqx" path="res://components/TileMaps/TileMap.tscn" id="1_nf1mr"]
+[ext_resource type="PackedScene" uid="uid://c4r5fltgvbim2" path="res://components/Actor/Projectile/Projectile.tscn" id="2_14vf1"]
 [ext_resource type="PackedScene" uid="uid://bymmbpcbbiuk4" path="res://components/Camera/Camera.tscn" id="2_m6c7o"]
 [ext_resource type="PackedScene" uid="uid://dr3kx0g66jwww" path="res://components/DebugInterface/DebugInterface.tscn" id="4_eqgc6"]
 
@@ -54,7 +55,11 @@ metadata/_edit_lock_ = true
 
 [node name="Actors" type="Node2D" parent="."]
 
+[node name="Projectile" parent="Actors" instance=ExtResource("2_14vf1")]
+position = Vector2(-101, 3)
+
 [node name="Camera" parent="." instance=ExtResource("2_m6c7o")]
+metadata/_edit_lock_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

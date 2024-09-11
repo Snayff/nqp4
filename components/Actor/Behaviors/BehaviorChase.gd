@@ -15,7 +15,7 @@ var in_range: bool = false :
         props.in_chase_range = in_range
         props_changed.emit()
 
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
     super(_target)
     
     props.chase_target = chase_target

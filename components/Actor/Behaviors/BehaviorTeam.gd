@@ -4,7 +4,7 @@ extends Behavior
 @export var modulate: Color = Color.WHITE
 @export var team: Constants.TEAMS
 
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
     super(_target)
     target.modulate = modulate
     props.team = team

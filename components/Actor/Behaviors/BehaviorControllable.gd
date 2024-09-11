@@ -2,7 +2,7 @@ class_name BehaviorControllable
 extends Behavior
 
 
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
     super(_target)
 
 

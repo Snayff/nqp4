@@ -4,13 +4,14 @@ extends Resource
 @warning_ignore("unused_signal") # @virtual
 signal props_changed()
 
-var target: Actor
+var target: Variant
 var props: Dictionary = {}
         
 
 ## Used on an actor's ready event
 # @virtual
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
+    assert(_target is Actor || _target is Projectile, "Target is neither Actor nor Projectile")
     target = _target
     target.behaviors_changed.emit()
 

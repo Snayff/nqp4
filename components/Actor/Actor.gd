@@ -61,16 +61,13 @@ func update_data(resource) -> void:
 func connect_behaviors() -> void:
     for behavior in behaviors:
         if !behavior.props_changed.is_connected(update_data):
-            print("Connected behavior '%s' to actor %s" % [behavior.get_script().get_global_name(), name])
             behavior.props_changed.connect(update_data.bind(behavior))
             behavior.initialize(self)
 
 
 func connect_effects() -> void:
-    print("Effects changed!", effects)
     for effect in effects:
         if !effect.props_changed.is_connected(update_data):
-            print("Connected effect '%s' to actor %s" % [effect.get_script().get_global_name(), name])
             effect.props_changed.connect(update_data.bind(effect))
             effect.initialize(self)
 
@@ -154,11 +151,6 @@ func _draw() -> void:
 #endregion
 
 #region Virtuals
-## @virtual
-func _init() -> void:
-    pass
-
-
 ## @virtual
 func on_selected() -> void:
     pass

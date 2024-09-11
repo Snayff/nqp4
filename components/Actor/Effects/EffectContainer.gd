@@ -1,8 +1,9 @@
+class_name EffectContainer
 extends Effect
 
 @export var effects: Array[Effect] = []
 
-func initialize(_target: Actor) -> void:
+func initialize(_target: Variant) -> void:
     target = _target
     for effect in effects:
         effect.initialize(target)

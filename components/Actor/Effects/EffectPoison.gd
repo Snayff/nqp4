@@ -6,7 +6,7 @@ extends Effect
 var effect_timer: Timer = Timer.new()
 var tick_timer: Timer = Timer.new()
 
-func initialize(_target: Actor, _damage: int = damage, _tick_time: float = 1.0, _duration: float = 2.5) -> void:
+func initialize(_target: Variant, _damage: int = damage, _tick_time: float = 1.0, _duration: float = 2.5) -> void:
     super(_target)
     damage = _damage
     effect_timer.one_shot = true

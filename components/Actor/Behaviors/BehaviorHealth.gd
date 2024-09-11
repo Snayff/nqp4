@@ -5,7 +5,7 @@ extends BehaviorStat
 @export var min_value: int = 0
 @export var max_value: int = 100
 
-func initialize(_target: Actor, _default_value: int = max_value, _min_value: int = 0, _max_value: int = max_value) -> void:
+func initialize(_target: Variant, _default_value: int = max_value, _min_value: int = 0, _max_value: int = max_value) -> void:
     super(_target)
     default_value = _default_value
     min_value = _min_value
