@@ -63,3 +63,5 @@ func execute_physics_process(_delta) -> void:
 
 func destroy() -> void:
     super()
+    timer.timeout.disconnect(on_timer_timeout)
+    target.remove_child(timer)
