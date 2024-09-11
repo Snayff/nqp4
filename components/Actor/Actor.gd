@@ -4,6 +4,8 @@ extends RigidBody2D
 #region Signals
 ## Emitted every time the selection state changes.
 signal selection_changed(selected: bool)
+signal behaviors_changed()
+signal effects_changed()
 #endregion
 
 #region Exports
@@ -11,14 +13,14 @@ signal selection_changed(selected: bool)
 @export var speed: float = 125
 ## The minimum distance to the target's position before stopping.
 @export var target_stop_distance: float = 30
-## Whether the [Actor] is selected (controlled) or not.
+## Whether the [Actor] is selected or not.
+#  NOTE: consider moving to a dedicated BehaviorSelectable
 @export var is_selected:bool = false :
-    get:
-        return is_selected
     set(v):
         is_selected = v
         emit_signal("selection_changed", is_selected)
 @export var behaviors: Array[Behavior] = []
+@export var effects: Array[Effect] = []
 #endregion
 
 #region On Ready
@@ -38,37 +40,68 @@ var _move_to_target: bool = false
 #region Functions
 func _ready() -> void:
     selection_changed.connect(on_selection_changed)
+    behaviors_changed.connect(connect_behaviors)
+    effects_changed.connect(connect_effects)
+    
     Global.target_position_changed.connect(move_to_target)
     if Global.DEBUG.actor_hover_print:
         mouse_entered.connect(func(): print("Mouse entered over %s" % self))
         mouse_exited.connect(func(): print("Mouse exited over %s" % self))
+    
+    connect_behaviors()
+    connect_effects()
+
+
+func update_data(resource) -> void:
+    data.merge(resource.props, false)
+    if resource.props != data:
+        resource.props = data
+
+
+func connect_behaviors() -> void:
     for behavior in behaviors:
-        behavior.props_changed.connect(update_data.bind(behavior))
-        behavior.initialize(self)
+        if !behavior.props_changed.is_connected(update_data):
+            print("Connected behavior '%s' to actor %s" % [behavior.get_script().get_global_name(), name])
+            behavior.props_changed.connect(update_data.bind(behavior))
+            behavior.initialize(self)
 
 
-func update_data(behavior) -> void:
-    data.merge(behavior.props, false)
-    if behavior.props != data:
-        behavior.props = data
+func connect_effects() -> void:
+    print("Effects changed!", effects)
+    for effect in effects:
+        if !effect.props_changed.is_connected(update_data):
+            print("Connected effect '%s' to actor %s" % [effect.get_script().get_global_name(), name])
+            effect.props_changed.connect(update_data.bind(effect))
+            effect.initialize(self)
 
 
 func _physics_process(delta: float) -> void:
     if is_selected:
         apply_impulse(direction * speed * delta, global_position)
     else:
-        # TODO: Handle cases where larger groups of actors can't get close enough to the target
-        if _move_to_target && in_target_range():
-            apply_impulse(global_position.direction_to(_target_position) * speed * delta, global_position)
+        # TODO:
+        # - Handle cases where larger groups of actors can't get close
+        #   enough to the target.
+        # - Move to BehaviorMoveTowards
+        if _move_to_target:
+            if in_target_range():
+                apply_impulse(global_position.direction_to(_target_position) * speed * delta, global_position)
+            else:
+                _move_to_target = false
     for behavior in behaviors:
         behavior.execute_physics_process(delta)
+    for effect in effects:
+        effect.execute_physics_process(delta)
 
 
 func _process(delta: float) -> void:
     if Global.DEBUG.draw_actor_debug:
         queue_redraw()
+    
     for behavior in behaviors:
         behavior.execute_process(delta)
+    for effect in effects:
+        effect.execute_process(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:

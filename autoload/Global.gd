@@ -12,8 +12,6 @@ const DEBUG: Dictionary = {
 signal selected_actor_changed(actor: Actor)
 ## Globally accessible selected [Actor].
 var selected_actor: Actor = null :
-    get:
-        return selected_actor
     set(v):
         selected_actor = v
         selected_actor_changed.emit(selected_actor)
@@ -24,6 +22,7 @@ var selected_actor: Actor = null :
 signal target_position_changed(position: Vector2)
 var target_position: Vector2 = Vector2.ZERO
 #endregion
+
 
 #region Functions
 func spawn_spiral() -> void:
@@ -50,6 +49,8 @@ func spawn_spiral() -> void:
         else:
             team.team = Constants.TEAMS.FRIENDLY
         actor.behaviors.push_back(team)
+        actor.behaviors.push_back(BehaviorControllable.new())
+        actor.behaviors.push_back(BehaviorHealth.new())
         actor_parent.add_child(actor)
 
 
@@ -62,9 +63,20 @@ func _ready() -> void:
 func _input(_event: InputEvent) -> void:
     if Input.is_action_just_released(&"ui_accept"):
         release_actor()
+    if Input.is_action_just_pressed(&"ui_cancel"):
+        print("Applying effect!")
+        apply_effect()
 
 
 func release_actor() -> void:
-    selected_actor.is_selected = false
+    if selected_actor:
+        selected_actor.is_selected = false
     selected_actor = null
+
+
+func apply_effect() -> void:
+    if selected_actor != null:
+        print("Applying poison to %s !" % selected_actor.name)
+        selected_actor.effects.push_back(EffectPoison.new())
+        selected_actor.effects_changed.emit()
 #endregion

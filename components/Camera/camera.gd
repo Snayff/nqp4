@@ -23,7 +23,6 @@ func handle_input(delta: float, target = null) -> void:
     direction.y = Input.get_axis(&"move_up", &"move_down")
     
     if target:
-        target.direction = direction
         zoom = zoom.lerp(Vector2(2.5, 2.5), 0.1)
         position = target.position
     else:

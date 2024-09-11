@@ -2,7 +2,6 @@ class_name BehaviorChase
 extends Behavior
 
 var timer: Timer = Timer.new()
-var actor: Actor
 var chase_cooldown: float = 2.5
 var chase_target: Actor = null :
     set(v):
@@ -16,9 +15,8 @@ var in_range: bool = false :
         props.in_chase_range = in_range
         props_changed.emit()
 
-func initialize(target: Actor) -> void:
-    super(target)
-    actor = target
+func initialize(_target: Actor) -> void:
+    super(_target)
     
     props.chase_target = chase_target
     props.in_chase_range = in_range
@@ -37,7 +35,7 @@ func on_view_range_entered(body: Node2D) -> void:
     if body is Actor:
         if !body.data.has("team"):
             return
-        if body.data.team != actor.data.team:
+        if body.data.team != target.data.team:
             if chase_target == null:
                 chase_target = body
             in_range = true
@@ -60,4 +58,8 @@ func on_timer_timeout() -> void:
 
 func execute_physics_process(_delta) -> void:
     if chase_target:
-        actor.move_to_target(chase_target.global_position)
+        target.move_to_target(chase_target.global_position)
+
+
+func destroy() -> void:
+    super()
