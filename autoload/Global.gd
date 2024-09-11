@@ -2,7 +2,9 @@ extends Node
 
 const DEBUG: Dictionary = {
     "actor_hover_print": false,
-    "spawn_spiral": true
+    "spawn_spiral": true,
+    "print_selected_actor_data": true,
+    "draw_actor_debug": true
 }
 
 #region selected_actor
@@ -10,8 +12,6 @@ const DEBUG: Dictionary = {
 signal selected_actor_changed(actor: Actor)
 ## Globally accessible selected [Actor].
 var selected_actor: Actor = null :
-    get:
-        return selected_actor
     set(v):
         selected_actor = v
         selected_actor_changed.emit(selected_actor)
@@ -23,15 +23,16 @@ signal target_position_changed(position: Vector2)
 var target_position: Vector2 = Vector2.ZERO
 #endregion
 
+
 #region Functions
 func spawn_spiral() -> void:
-    const actor_scene: Resource = preload("res://components/Actor/Actor.tscn")
+    const actor_scene: Resource = preload("res://components/Actor/ExampleActor/ExampleActor.tscn")
     const angle_step: float = 5
     const distance: float = 5
     const center: Vector2 = Vector2.ZERO
-    var actor_parent: Node2D = get_tree().get_root().get_child(1).find_child("Actors")
+    var actor_parent: Node2D = get_tree().get_root().get_node("Main/Actors")
 
-    for i in range(1000):
+    for i in range(2):
         var angle: float = i * angle_step
         var radius: float = i * distance / (2 * PI)
         var x: float = center.x + radius * cos(angle)
@@ -40,6 +41,16 @@ func spawn_spiral() -> void:
         var actor: Actor = actor_scene.instantiate()
         
         actor.position = position
+        var team = BehaviorTeam.new()
+        if i % 2:
+            team.team = Constants.TEAMS.ENEMY
+            team.modulate = Color.RED
+            actor.behaviors.push_back(BehaviorChase.new())
+        else:
+            team.team = Constants.TEAMS.FRIENDLY
+        actor.behaviors.push_back(team)
+        actor.behaviors.push_back(BehaviorControllable.new())
+        actor.behaviors.push_back(BehaviorHealth.new())
         actor_parent.add_child(actor)
 
 
@@ -52,9 +63,20 @@ func _ready() -> void:
 func _input(_event: InputEvent) -> void:
     if Input.is_action_just_released(&"ui_accept"):
         release_actor()
+    if Input.is_action_just_pressed(&"ui_cancel"):
+        print("Applying effect!")
+        apply_effect()
 
 
 func release_actor() -> void:
-    selected_actor.is_selected = false
+    if selected_actor:
+        selected_actor.is_selected = false
     selected_actor = null
+
+
+func apply_effect() -> void:
+    if selected_actor != null:
+        print("Applying poison to %s !" % selected_actor.name)
+        selected_actor.effects.push_back(EffectPoison.new())
+        selected_actor.effects_changed.emit()
 #endregion
